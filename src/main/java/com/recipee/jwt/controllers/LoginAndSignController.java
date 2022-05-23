@@ -29,14 +29,14 @@ public class LoginAndSignController {
     private JwtUserDetailsService userDetailsService;
 
     @RequestMapping(value = EndPointConstants.SLASH_AUTHENTICATE, method = RequestMethod.POST)
-    public Response<JwtResponse> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public Response<JwtResponse> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws BadCredentialsException {
 
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new BadCredentialsException("INVALID_CREDENTIALS", e);
         }
 
         final UserDetails userDetails = userDetailsService

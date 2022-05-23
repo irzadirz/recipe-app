@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface FileCommonUtils {
 
-    static List<FileDocumentImpl> uploadMultipleFiles(List<MultipartFile> multipartFiles, String uploadsPath, String fileName, String folderName, IntentType intentType, String username) throws FileUploadException, FileNotFoundException {
+    static List<FileDocumentImpl> uploadMultipleFiles(List<MultipartFile> multipartFiles, String uploadsPath, String fileName, String folderName, IntentType intentType, String username) throws FileUploadException {
         validateFileNameAndUploadPath(uploadsPath, fileName);
         if (Utils.isNullOrEmptyCollection(multipartFiles))
             return null;

@@ -5,6 +5,7 @@ import com.recipee.activity.dto.RecipeDocumentDTO;
 import com.recipee.activity.model.LikeCommentDocImpl;
 import com.recipee.activity.model.RecipeDocumentImpl;
 import com.recipee.activity.services.RecipeActivityService;
+import com.recipee.activity.services.exceptions.InvalidRequestException;
 import com.recipee.jwt.config.JwtTokenUtil;
 import com.recipee.rest.Response;
 import com.recipee.rest.ResponseBuilder;
@@ -44,7 +45,7 @@ public class RecipeActivityController implements ResponseBuilder {
         token = token.substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         if (Utils.isNullOrEmpty(recipeDocumentString))
-            throw new NullPointerException("recipe-data is empty");
+            throw new InvalidRequestException("recipe-data is empty");
         var result = recipeActivityService.createRecipe(recipeDocumentString, multipartFile, username);
         return buildResponse("success", result);
     }

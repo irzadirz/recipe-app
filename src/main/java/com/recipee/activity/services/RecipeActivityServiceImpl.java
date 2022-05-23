@@ -7,6 +7,7 @@ import com.recipee.activity.dao.RecipeDocumentDao;
 import com.recipee.activity.dto.LikeCommentRequest;
 import com.recipee.activity.dto.RecipeDocumentDTO;
 import com.recipee.activity.model.*;
+import com.recipee.activity.services.exceptions.InvalidRequestException;
 import com.recipee.utils.CollectionConstants;
 import com.recipee.utils.FileCommonUtils;
 import com.recipee.utils.Utils;
@@ -34,16 +35,20 @@ public class RecipeActivityServiceImpl implements RecipeActivityService {
     private FileService fileService;
 
     @Override
-    public RecipeDocumentDTO createRecipe(String recipeDocumentString, List<MultipartFile> multipartFiles, String username) throws JsonProcessingException, FileNotFoundException, FileUploadException {
+    public RecipeDocumentDTO createRecipe(String recipeDocumentString, List<MultipartFile> multipartFiles, String username) throws JsonProcessingException, FileUploadException {
         ObjectMapper mapper=new ObjectMapper();
-        RecipeDocumentImpl recipeDocument = mapper.readValue(recipeDocumentString, RecipeDocumentImpl.class);
-
+        RecipeDocumentImpl recipeDocument = null;
+        try {
+            recipeDocument = mapper.readValue(recipeDocumentString, RecipeDocumentImpl.class);
+        } catch (JsonProcessingException e) {
+            throw new InvalidRequestException("recipe-data is invalid");
+        }
         if (Utils.isNull(recipeDocument))
-            throw new NullPointerException("recipe-data is empty");
+            throw new InvalidRequestException("recipe-data is empty");
         else if (Utils.isNullOrEmptyCollection(recipeDocument.getIngredients()))
-            throw new NullPointerException("ingredients is missing");
+            throw new InvalidRequestException("ingredients is missing");
         else if (Utils.isNullOrEmptyCollection(recipeDocument.getSteps()))
-            throw new NullPointerException("Steps is missing");
+            throw new InvalidRequestException("Steps is missing");
         List<FileDocumentImpl> fileDocuments = null;
         String uploadPath = fileProperties.getUploadPath();
         if (!Utils.isNullOrEmptyCollection(multipartFiles)) {
@@ -74,11 +79,11 @@ public class RecipeActivityServiceImpl implements RecipeActivityService {
     @Override
     public LikeCommentDocImpl postLikeAndComment(LikeCommentRequest request) {
         if (Utils.isNullOrEmpty(request.getRecipeId()))
-            throw new NullPointerException("recipeId is mandatory");
+            throw new InvalidRequestException("recipeId is mandatory");
         if (Utils.isNullOrEmpty(request.getUserId()))
-            throw new NullPointerException("UserId is mandatory");
+            throw new InvalidRequestException("UserId is mandatory");
         if (Utils.isNullOrEmpty(request.getUsername()))
-            throw new NullPointerException("Username is mandatory");
+            throw new InvalidRequestException("Username is mandatory");
 
         var find = likeCommentDocDao.findByUsernameAndRecipeId(request.getUsername(), request.getRecipeId());
         LikeCommentDocImpl likeCommentDoc = null;
