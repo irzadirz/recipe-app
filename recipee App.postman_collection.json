@@ -7,12 +7,25 @@
 	"item": [
 		{
 			"name": "authenticate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var token = \"Bearer \"+pm.response.json().data.token;\r",
+							"pm.globals.set(\"token1\", token);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"irzad\",\r\n    \"password\" : \"12345\"\r\n}",
+					"raw": "{\r\n    \"username\": \"irzad411\",\r\n    \"password\" : \"12345\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -140,16 +153,13 @@
 					"formdata": [
 						{
 							"key": "recipe-data",
-							"value": "{\"name\" : \"recp1\", \"ingredients\" : [ {\"name\" : \"ing1\", \"description\" : \"1 tea spoon\"} ], \"steps\" : [\"1. take a glass of water\"] }",
+							"value": "{\"name\" : \"recp123\", \"ingredients\" : [ {\"name\" : \"ing1\", \"description\" : \"1 tea spoon\"} ], \"steps\" : [\"1. take a glass of water\"] }",
 							"type": "default"
 						},
 						{
 							"key": "attached-images",
 							"type": "file",
-							"src": [
-								"/C:/Users/1197/Downloads/DSC_0007_copy_2848x2848_1.jpg",
-								"/C:/Users/1197/Downloads/Mohamed's Resume (4).pdf"
-							]
+							"src": "/C:/Users/1197/Downloads/irzad3.jpg.jpg"
 						}
 					],
 					"options": {
@@ -184,22 +194,8 @@
 					}
 				],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "recipe-data",
-							"value": "{\"name\" : \"recp1\", \"ingredients\" : [ {\"name\" : \"ing1\", \"description\" : \"1 tea spoon\"} ], \"steps\" : [\"1. take a glass of water\"] }",
-							"type": "default"
-						},
-						{
-							"key": "attached-images",
-							"type": "file",
-							"src": [
-								"/C:/Users/1197/Downloads/DSC_0007_copy_2848x2848_1.jpg",
-								"/C:/Users/1197/Downloads/Mohamed's Resume (4).pdf"
-							]
-						}
-					],
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\" : \"628a6e86c6166301a6ad6332\",\r\n    \"recipeId\" : \"628a6e86c6166301a6ad6111\",\r\n    \"like\": true,\r\n    \"comment\" : \"6\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -207,14 +203,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8090/recipe",
+					"raw": "http://localhost:8090/recipe/likeAndComment",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8090",
 					"path": [
-						"recipe"
+						"recipe",
+						"likeAndComment"
 					]
 				}
 			},
@@ -257,14 +254,21 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8090/recipe",
+					"raw": "http://localhost:8090/recipe/search?ingredient=ing1234",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8090",
 					"path": [
-						"recipe"
+						"recipe",
+						"search"
+					],
+					"query": [
+						{
+							"key": "ingredient",
+							"value": "ing1234"
+						}
 					]
 				}
 			},
@@ -276,8 +280,19 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"irzad\",\r\n    \"password\" : \"12345\"\r\n}",
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user-data",
+							"value": "{\"name\": \"irshadirz4\", \"username\": \"irzad6\", \"password\" : \"12345\"}",
+							"type": "default"
+						},
+						{
+							"key": "profile-picture",
+							"type": "file",
+							"src": "/C:/Users/1197/Downloads/My project.png"
+						}
+					],
 					"options": {
 						"raw": {
 							"language": "json"
@@ -285,18 +300,120 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8090/authenticate",
+					"raw": "http://localhost:8090/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8090",
 					"path": [
-						"authenticate"
+						"register"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "register",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user-data",
+									"value": "{\"name\": \"irshadirz4\", \"username\": \"irzad6\", \"password\" : \"12345\"}",
+									"type": "default"
+								},
+								{
+									"key": "profile-picture",
+									"type": "file",
+									"src": "/C:/Users/1197/Downloads/My project.png"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 22 May 2022 17:10:32 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"628a6e86c6166301a6ad6332\",\n    \"name\": \"irshadirz4\",\n    \"username\": \"irzad6\",\n    \"password\": \"$2a$10$HGXYikKtCToIrmj63jcYxOlysygB2cnsKtWPORh73vmNaRZnxi8RG\",\n    \"userType\": \"USER\",\n    \"profileImageDoc\": null,\n    \"uts\": 1653239426981,\n    \"cts\": 1653239426981\n}"
+				}
+			]
 		}
 	]
 }
